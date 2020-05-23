@@ -1,20 +1,18 @@
-import { Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Estado } from './estado.entity';
 import { Rol } from './rol.entity';
 
 @Entity()
-export class  Usuario{
+export class Usuario{
 
     @PrimaryGeneratedColumn()
     usuario_id: number;
 
-    @OneToOne(type => Estado)
-    @JoinColumn()
-    estado_id: number;
+    @ManyToOne(type => Estado, estado => estado.id, { eager: true },)
+    estado: Estado;
 
-    @OneToOne(type => Rol)
-    @JoinColumn()
-    rol_id: number;
+    @ManyToOne(type => Rol, rol => rol.id, { eager: true },)
+    rol: Rol;
 
     @Column({type : "varchar", name : "usuario_cedula", length : 13, nullable: false, unique: true})
     usuario_cedula: string;
