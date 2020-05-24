@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { IsEmail } from 'class-validator';
 import { Estado } from './estado.entity';
 import { Rol } from './rol.entity';
 
@@ -23,6 +24,7 @@ export class Usuario{
     @Column({type : "varchar", name : "usuario_apellido", length : 200, nullable: false})
     usuario_apellido: string;
 
+    @IsEmail()
     @Column({type : "varchar", name : "usuario_correo", length : 100, nullable: false, unique: true})
     usuario_correo: string;
 
