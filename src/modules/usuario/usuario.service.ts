@@ -19,7 +19,9 @@ export class UsuarioService {
     }
 
     async saveUsuario(usuario : Usuario){
-        return await this.usuarioRepository.insert(usuario);
+        const result = await this.usuarioRepository.insert(usuario);
+        console.log(result)
+        return result;
     }
 
     async updateUsuario(idusuario : number, usuario : Usuario){

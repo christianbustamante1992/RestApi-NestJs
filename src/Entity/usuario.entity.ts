@@ -24,7 +24,9 @@ export class Usuario{
     @Column({type : "varchar", name : "usuario_apellido", length : 200, nullable: false})
     usuario_apellido: string;
 
-    @IsEmail()
+    @IsEmail({}, {
+        message : "Email inválido"
+    })
     @Column({type : "varchar", name : "usuario_correo", length : 100, nullable: false, unique: true})
     usuario_correo: string;
 

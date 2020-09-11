@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, ValidationPipe } from '@nestjs/common';
 import { UsuarioService } from './usuario.service';
 import { Usuario } from 'src/Entity/usuario.entity';
 import { Logindto } from 'src/Model/usuario/logindto.interface';
@@ -20,7 +20,7 @@ export class UsuarioController {
     }
 
     @Post()
-    addUsuario(@Body() data : Usuario){
+    addUsuario(@Body(ValidationPipe) data : Usuario){
         return this.service.saveUsuario(data);
     }
 
