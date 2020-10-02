@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Usuario } from 'src/Entity/usuario.entity';
@@ -6,7 +7,7 @@ import { Usuario } from 'src/Entity/usuario.entity';
 @Injectable()
 export class UsuarioService {
 
-    constructor(@InjectRepository(Usuario) private usuarioRepository: Repository<Usuario>) { }
+    constructor(@InjectRepository(Usuario) private usuarioRepository: Repository<Usuario>, private jwtService: JwtService) { }
 
     async getallUsuario() {
         return await this.usuarioRepository.find();
@@ -20,8 +21,7 @@ export class UsuarioService {
 
     async saveUsuario(usuario : Usuario){
         const result = await this.usuarioRepository.insert(usuario);
-        console.log(result)
-        return result;
+        return {message: "Usuario Creado", data : usuario, response: result};
     }
 
     async updateUsuario(idusuario : number, usuario : Usuario){
@@ -29,8 +29,20 @@ export class UsuarioService {
     }
 
     async loginUsuario(correo : string, contrasena : string){
-        return await this.usuarioRepository.find({
-            where : {"usuario_correo" : correo, "usuario_contrasena" : contrasena}
+        const user = await this.usuarioRepository.find({
+            where : {"usuario_correo" : correo, "usuario_contrasena" : contrasena, "estadoId" : 1}
         });
+
+        if(user.length == 0) {
+            throw new UnauthorizedException('Invalid credentials');
+        }
+
+        const payload = { email : correo, password: contrasena };
+
+        return {
+                    message: "Inicio de sesion correcto",
+                    data: user,
+                    token: this.jwtService.sign(payload)
+                };
     }
 }

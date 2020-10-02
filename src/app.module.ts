@@ -3,11 +3,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Usuario } from './Entity/usuario.entity';
-import { Rol } from './Entity/rol.entity';
-import { Estado } from './Entity/estado.entity';
 import { UsuarioModule } from './Modules/usuario/usuario.module';
-
 
 @Module({
   imports: [
@@ -19,11 +15,7 @@ import { UsuarioModule } from './Modules/usuario/usuario.module';
       password: "",
       database: "nestrestaurant",
       synchronize: true,
-      entities: [
-          Usuario,
-          Rol,
-          Estado
-      ]
+      entities: ['dist/**/*.entity.js']
     }),
     UsuarioModule
   ],
