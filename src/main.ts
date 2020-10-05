@@ -15,11 +15,15 @@ async function bootstrap() {
     .addTag('practica')
     .addBearerAuth()
     .build();
+    
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('documentacion', app, document);
+
+  app.enableCors();
 
   await app.listen(3000);
 
   logger.log(`Server is running at ${await app.getUrl()}`);
 }
+
 bootstrap();

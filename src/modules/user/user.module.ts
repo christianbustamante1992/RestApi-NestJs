@@ -2,16 +2,16 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { UsuarioService } from './usuario.service';
-import { UsuarioController } from './usuario.controller';
-import { Usuario } from 'src/Entity/usuario.entity';
+import { UserService } from './user.service';
+import { UserController } from './user.controller';
+import { User } from 'src/entity/user.entity';
 import { jwtConstants } from '../../constants/keyjwt';
 import { JwtStrategy } from '../auth/jwt.strategy';
 
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([Usuario]),
+        TypeOrmModule.forFeature([User]),
         PassportModule,
         JwtModule.register({
             secret: jwtConstants.secret,
@@ -19,12 +19,12 @@ import { JwtStrategy } from '../auth/jwt.strategy';
         }),
     ],
     controllers: [
-        UsuarioController 
+        UserController 
     ],
     providers: [
-        UsuarioService,
+        UserService,
         JwtStrategy 
     ],
 
 })
-export class UsuarioModule {}
+export class UserModule {}
