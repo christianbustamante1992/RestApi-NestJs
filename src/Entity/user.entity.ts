@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, BeforeInsert, BeforeUpdate } from 'typeorm';
+import { hash } from 'bcryptjs';
 import { IsEmail, IsString, IsNotEmpty, IsNumberString, MaxLength, Length, IsBoolean } from 'class-validator';
 import { State } from './state.entity';
 import { Role } from './role.entity';
@@ -85,6 +86,12 @@ export class User{
     @IsBoolean({message : "El campo $property es de tipo boolean"})
     @Column({type : "boolean", name : "verified", nullable: true})
     verified: boolean;
+
+    @BeforeInsert()
+    @BeforeUpdate()
+    async hashPassword() {
+        this.password = await hash(this.password, 10);
+    }
 
 }
 
