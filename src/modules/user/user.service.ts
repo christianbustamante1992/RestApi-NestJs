@@ -28,12 +28,13 @@ export class UserService {
     }
 
     async update(iduser : number, user : User){
-        return await this.userRepository.update(iduser, user);
+        const newuser = this.userRepository.create(user);
+        return await this.userRepository.update(iduser, newuser);
     }
 
-    async login(email : string, password : string){
+    async login(email : string){
         return await this.userRepository.find({
-            where : {email, password, "stateId" : 1}
+            where : {email, "state" : 1}
         });
     }
 }

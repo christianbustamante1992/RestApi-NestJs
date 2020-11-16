@@ -79,8 +79,8 @@ export class User{
 
     @IsString({message : "El campo $property es de tipo string"})
     @IsNotEmpty({message : "El campo $property es requerido"})
-    @MaxLength(200, {message : "El campo $property debe tener como máximo $constraint1 caracteres"})
-    @Column({type : "varchar", name : "password", length : 200, nullable: false})
+    @MaxLength(20, {message : "El campo $property debe tener como máximo $constraint1 caracteres"})
+    @Column({type : "varchar", name : "password", length : 500, nullable: false})
     password: string;
 
     @IsBoolean({message : "El campo $property es de tipo boolean"})
