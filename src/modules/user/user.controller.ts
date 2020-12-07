@@ -1,19 +1,19 @@
-import { Controller, Get, Post, Body, Param, ValidationPipe, UseGuards, NotFoundException, InternalServerErrorException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, ValidationPipe, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from 'src/entity/user.entity';
 import { Logindto } from 'src/model/user/logindto.class';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ApiBearerAuth, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { JwtService } from '@nestjs/jwt';
-import { compare } from 'bcryptjs';
+import { compare } from 'bcryptjs'
 
 @ApiTags('Users')
 @Controller('user')
 export class UserController {
 
     constructor(
-                    private service: UserService, 
-                    private jwtService: JwtService
+                    private serviceUser: UserService, 
+                    private serviceJwt: JwtService
                 ) { }
 
     @ApiBearerAuth()
@@ -22,7 +22,7 @@ export class UserController {
     @UseGuards(JwtAuthGuard)
     @Get()
     async all() {
-        const data = await this.service.all();
+        const data = await this.serviceUser.all();
         return {
             total : data.length,
             result : data,
@@ -37,7 +37,7 @@ export class UserController {
     @UseGuards(JwtAuthGuard)
     @Get(':id')
     async find(@Param() params) {
-        const data = await this.service.findById(params.id);
+        const data = await this.serviceUser.findById(params.id);
         return {
             total : data.length,
             result : data,
@@ -49,7 +49,7 @@ export class UserController {
     @ApiOkResponse({ description: 'Get the users data with its token' })
     @Post('login')
     async login(@Body(ValidationPipe) data : Logindto){
-        const user = await this.service.login(data.email);
+        const user = await this.serviceUser.login(data.email);
 
         if(user.length == 0) {
             return {
@@ -70,7 +70,7 @@ export class UserController {
                         data: user,
                         message: "Inicio de sesion correcto",
                         type : "success",
-                        token: this.jwtService.sign(payload)
+                        token: this.serviceJwt.sign(payload)
                     }; 
         }else{
             return {
@@ -93,7 +93,7 @@ export class UserController {
 
         try {
             
-            const response = await this.service.update(params.id, data);
+            const response = await this.serviceUser.update(params.id, data);
 
             if(response.affected > 0){
 
@@ -128,7 +128,7 @@ export class UserController {
 
         try {
             
-            await this.service.add(data);
+            await this.serviceUser.add(data);
 
             return {
                 result : data,

@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './modules/user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import Joi = require('@hapi/joi');
+import { RoleModule } from './modules/role/role.module';
 
 @Module({
   imports: [
@@ -37,7 +38,8 @@ import Joi = require('@hapi/joi');
         synchronize: true,
       })
     }),
-    UserModule
+    UserModule,
+    RoleModule
   ],
   controllers: [AppController],
   providers: [AppService],
