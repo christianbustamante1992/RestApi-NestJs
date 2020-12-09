@@ -1,24 +1,24 @@
 import { Body, Controller, Get, Param, Post, UseGuards, ValidationPipe } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
-import { Role } from 'src/entity/role.entity';
+import { State } from 'src/entity/state.entity';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { RoleService } from './role.service';
+import { StateService } from './state.service';
 
-@ApiTags('Roles')
-@Controller('role')
-export class RoleController {
+@ApiTags('States')
+@Controller('state')
+export class StateController {
 
     constructor(
-        private serviceRole : RoleService
+        private serviceState : StateService
     ){}
 
     @ApiBearerAuth()
-    @ApiOkResponse({ description: 'List all roles' })
+    @ApiOkResponse({ description: 'List all states' })
     @ApiUnauthorizedResponse()
     @UseGuards(JwtAuthGuard)
     @Get()
-    async allRoles() {
-        const data = await this.serviceRole.all();
+    async allStates() {
+        const data = await this.serviceState.all();
         return {
             total : data.length,
             result : data,
@@ -28,12 +28,12 @@ export class RoleController {
     }
 
     @ApiBearerAuth()
-    @ApiOkResponse({ description: 'Filter role by Id' })
+    @ApiOkResponse({ description: 'Filter state by Id' })
     @ApiUnauthorizedResponse()
     @UseGuards(JwtAuthGuard)
     @Get(':id')
-    async findRole(@Param() params) {
-        const data = await this.serviceRole.findById(params.id);
+    async findState(@Param() params) {
+        const data = await this.serviceState.findById(params.id);
         return {
             total : data.length,
             result : data,
@@ -43,15 +43,15 @@ export class RoleController {
     }
 
     @ApiBearerAuth()
-    @ApiOkResponse({ description: 'Update a role by Id' })
+    @ApiOkResponse({ description: 'Update a state by Id' })
     @ApiUnauthorizedResponse()
     @UseGuards(JwtAuthGuard)
     @Post(':id')
-    async updateRole(@Body(ValidationPipe) data : Role, @Param() params ){
+    async updateState(@Body(ValidationPipe) data : State, @Param() params ){
 
         try {
             
-            const response = await this.serviceRole.update(params.id, data);
+            const response = await this.serviceState.update(params.id, data);
 
             if(response.affected > 0){
 
@@ -64,7 +64,7 @@ export class RoleController {
             }else{
                 return {
                     result : {},
-                    message : "No se ha encontrado el rol a modificar",
+                    message : "No se ha encontrado el estado a modificar",
                     type : "error"
                 }
             }
@@ -81,15 +81,15 @@ export class RoleController {
     }
 
     @ApiBearerAuth()
-    @ApiOkResponse({ description: 'Create role' })
+    @ApiOkResponse({ description: 'Create state' })
     @ApiUnauthorizedResponse()
     @UseGuards(JwtAuthGuard)
     @Post()
-    async createRole(@Body(ValidationPipe) data : Role){
+    async createState(@Body(ValidationPipe) data : State){
 
         try {
             
-            await this.serviceRole.add(data);
+            await this.serviceState.add(data);
 
             return {
                 result : data,

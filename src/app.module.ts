@@ -7,6 +7,7 @@ import { UserModule } from './modules/user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import Joi = require('@hapi/joi');
 import { RoleModule } from './modules/role/role.module';
+import { StateModule } from './modules/state/state.module';
 
 @Module({
   imports: [
@@ -39,7 +40,8 @@ import { RoleModule } from './modules/role/role.module';
       })
     }),
     UserModule,
-    RoleModule
+    RoleModule,
+    StateModule
   ],
   controllers: [AppController],
   providers: [AppService],
